@@ -1,12 +1,26 @@
 from flask import Flask
 import requests
+from flask_apscheduler import APScheduler
+import pymongo
+import schedule
 
 app = Flask(__name__)
+scheduler = APScheduler()
 
 
 @app.route("/")
 def hello_world():
-    return main()
+    write_data()
+    return get_all_products()
+
+
+def write_data():
+    Db_Client = pymongo.MongoClient('mongodb+srv://JashanpreetSingh-dev:Jashan04$@cluster0.urbakzt.mongodb.net/?'
+                                    'retryWrites=true&w=majority')
+    db = Db_Client['prototype']
+    collection = db['orders']
+    list_of_docs = get_all_products()['data']['orders']["edges"]
+    collection.insert_many(list_of_docs)
 
 
 URL = "https://objectivismrelativism.myshopify.com"
@@ -67,11 +81,3 @@ def get_all_products():
     url = f'{URL}/admin/api/2022-07/graphql.json'
     r = requests.post(url, auth=(API_KEY, ACCESS_TOKEN), json={"query": query})
     return r.json()
-
-
-def main():
-    return get_all_products()
-
-
-if __name__ == '__main__':
-    main()
