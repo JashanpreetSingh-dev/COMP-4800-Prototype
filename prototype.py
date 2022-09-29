@@ -1,12 +1,12 @@
 from flask import Flask
 import requests
 
-
 app = Flask(__name__)
+
 
 @app.route("/")
 def hello_world():
-    return f"<p>Hello, World! {main()}</p>"
+    return main()
 
 
 URL = "https://objectivismrelativism.myshopify.com"
@@ -66,7 +66,7 @@ def get_all_products():
 
     url = f'{URL}/admin/api/2022-07/graphql.json'
     r = requests.post(url, auth=(API_KEY, ACCESS_TOKEN), json={"query": query})
-    return(r.json())
+    return r.json()
 
 
 def main():
@@ -75,5 +75,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
