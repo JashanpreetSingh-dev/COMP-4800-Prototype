@@ -2,8 +2,9 @@ import pymongo
 from flask import Flask
 import requests
 from flask_apscheduler import APScheduler
-import schedule
+# import schedule
 
+# Initialize app
 app = Flask(__name__)
 scheduler = APScheduler()
 
